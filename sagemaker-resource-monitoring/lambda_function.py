@@ -9,13 +9,10 @@ import transform_jobs
 
 def lambda_handler(event, context):
     # SES에 필요한 정보
-    RECIPIENT = 'datanalytics_bgk@bespinglobal.com'
-    # RECIPIENT = 'songha.kim@bespinglobal.com'
-    SENDER = 'datanalytics_bgk@bespinglobal.com'
-    # AWS_REGION = 'us-west-2'
-    SUBJECT = '[Analytics팀] SageMaker 리소스 모니터링'
+    RECIPIENT = 'team@example.com'
+    SENDER = 'team@example.com'
+    SUBJECT = '[team] SageMaker 리소스 모니터링'
 
-    # SES = boto3.client('ses', region_name = AWS_REGION)
     SES = boto3.client('ses')
 
     # 실행중인 app 리소스 정보 확인
@@ -198,7 +195,7 @@ def lambda_handler(event, context):
     <html>
     <head></head>
     <body>
-    <h2>안녕하세요.<br> DataOps 본부 계정 담당자입니다.</h2>
+    <h2>안녕하세요.<br> xxxx 본부 계정 담당자입니다.</h2>
     <p>본 메일은 자동으로 발송되는 메일로, 삭제가 필요한 SageMaker 리소스에 대해 모니터링 결과를 취합하여 전달드립니다.
     <br>
     아래 내용을 확인하시어 본인이 생성한 서비스에 대해 조치해주시기 바랍니다. </p>
