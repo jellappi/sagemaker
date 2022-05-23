@@ -1,4 +1,5 @@
 import boto3
+import datetime
 import apps
 import instances
 import endpoints
@@ -13,6 +14,7 @@ def lambda_handler(event, context):
     SENDER = 'team@example.com'
     SUBJECT = '[team] SageMaker 리소스 모니터링'
 
+    # SES = boto3.client('ses', region_name = AWS_REGION)
     SES = boto3.client('ses')
 
     # 실행중인 app 리소스 정보 확인
@@ -28,7 +30,7 @@ def lambda_handler(event, context):
         <th>User</th>
         <th>Status</th>
         <th>Type</th>
-        <th>Creation Time</th>
+        <th>Creation Time (KST)</th>
         </tr>'''
 
         for app in apps_lists:
@@ -38,7 +40,7 @@ def lambda_handler(event, context):
             <td>{app["UserProfileName"]}</td>
             <td style="color:red;">{app['Status']}</td>
             <td>{app["AppType"]}</td>
-            <td>{str(app["CreationTime"])}</td>
+            <td>{(app["CreationTime"] + datetime.timedelta(hours=9)).strftime('%Y-%m-%d %H:%M:%S')}</td>
             </tr>'''
 
         delete_app_lists += "\n</table><br>"
@@ -58,7 +60,7 @@ def lambda_handler(event, context):
         <th>Region</th>
         <th>Type</th>
         <th>Status</th>
-        <th>Creation Time</th>
+        <th>Creation Time (KST)</th>
         </tr>'''
 
         for instance in instances_lists:
@@ -67,7 +69,7 @@ def lambda_handler(event, context):
             <td>{instance['Region']}</td>
             <td>{instance["InstanceType"]}</td>
             <td style="color:red;">{instance['NotebookInstanceStatus']}</td>
-            <td>{str(instance["CreationTime"])}</td>
+            <td>{(instance["CreationTime"] + datetime.timedelta(hours=9)).strftime('%Y-%m-%d %H:%M:%S')}</td>
             </tr>'''
 
         delete_instance_lists += "\n</table><br>"
@@ -86,7 +88,7 @@ def lambda_handler(event, context):
         <th>Name</th>
         <th>Region</th>
         <th>Status</th>
-        <th>Creation Time</th>
+        <th>Creation Time (KST)</th>
         <th>Instance Count</th>
         <th>Instance Type</th>
         <th>Model Name</th>
@@ -97,7 +99,7 @@ def lambda_handler(event, context):
             <td>{endpoint["EndpointName"]}</td>
             <td>{endpoint['Region']}</td>
             <td style="color:red;">{endpoint['EndpointStatus']}</td>
-            <td>{str(endpoint["CreationTime"])}</td>
+            <td>{(endpoint["CreationTime"] + datetime.timedelta(hours=9)).strftime('%Y-%m-%d %H:%M:%S')}</td>
             <td>{endpoint['CurrentInstanceCount']}</td>
             <td>{endpoint['InstanceType']}</td>
             <td>{endpoint['ModelName']}</td>
@@ -120,7 +122,7 @@ def lambda_handler(event, context):
         <th>Region</th>
         <th>Status</th>
         <th>Endpoint Name</th>
-        <th>Creation Time</th>
+        <th>Creation Time (KST)</th>
         </tr>'''
 
         for schedule in schedules_lists:
@@ -129,7 +131,7 @@ def lambda_handler(event, context):
             <td>{schedule["Region"]}</td>
             <td style="color:red;">{schedule['MonitoringScheduleStatus']}</td>
             <td>{schedule['EndpointName']}</td>
-            <td>{str(schedule["CreationTime"])}</td>
+            <td>{(schedule["CreationTime"] + datetime.timedelta(hours=9)).strftime('%Y-%m-%d %H:%M:%S')}</td>
             </tr>'''
 
         delete_schedule_lists += "\n</table><br>"
@@ -148,7 +150,7 @@ def lambda_handler(event, context):
         <th>Name</th>
         <th>Region</th>
         <th>Status</th>
-        <th>Creation Time</th>
+        <th>Creation Time (KST)</th>
         </tr>'''
 
         for job in training_jobs_lists:
@@ -156,7 +158,7 @@ def lambda_handler(event, context):
             <td>{job["TrainingJobName"]}</td>
             <td>{job["Region"]}</td>
             <td style="color:red;">{job['TrainingJobStatus']}</td>
-            <td>{str(job["CreationTime"])}</td>
+            <td>{(job["CreationTime"] + datetime.timedelta(hours=9)).strftime('%Y-%m-%d %H:%M:%S')}</td>
             </tr>'''
 
         delete_training_jobs_lists += "\n</table><br>"
@@ -175,7 +177,7 @@ def lambda_handler(event, context):
         <th>Name</th>
         <th>Region</th>
         <th>Status</th>
-        <th>Creation Time</th>
+        <th>Creation Time (KST)</th>
         </tr>'''
 
         for job in transform_jobs_lists:
@@ -183,7 +185,7 @@ def lambda_handler(event, context):
             <td>{job["TransformJobName"]}</td>
             <td>{job["Region"]}</td>
             <td style="color:red;">{job['TransformJobStatus']}</td>
-            <td>{str(job["CreationTime"])}</td>
+            <td>{(job["CreationTime"] + datetime.timedelta(hours=9)).strftime('%Y-%m-%d %H:%M:%S')}</td>
             </tr>'''
 
         delete_transform_jobs_lists += "\n</table><br>"
